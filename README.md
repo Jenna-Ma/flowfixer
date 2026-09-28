@@ -5,9 +5,6 @@ A faithful, runnable reproduction of the algorithm in
 (FLOWFIXER). This repo implements the full two-stage framework plus the RQ1–RQ4
 evaluation harness. Baselines are intentionally out of scope.
 
-> The code is written to run against an OpenAI-compatible endpoint but is **not
-> executed against the real API here** (per the reproduction brief). Use the
-> offline `FLOWFIXER_MOCK=1` mode to exercise the wiring without spending tokens.
 
 ## What's implemented
 
@@ -76,7 +73,7 @@ Common flags: `--runs N`, `--limit N` (debug), `--seed S`, `--out results.json`.
 ```bash
 FLOWFIXER_MOCK=1 python tests/test_dsl.py
 FLOWFIXER_MOCK=1 python tests/test_pipeline.py
-FLOWFIXER_MOCK=1 python experiments/report.py --runs 1   # runs on sample data
+FLOWFIXER_MOCK=1 python experiments/report.py --runs 1  
 ```
 
 In MOCK mode the LLM layer returns deterministic, structurally-valid stubs, so
