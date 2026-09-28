@@ -1,0 +1,62 @@
+[
+  {
+    "case_id": "iceland_travel_001",
+    "platform": "dify",
+    "task": "Generate a summer travel itinerary for Iceland from July 1st to 8th, including attractions, transportation and hotels suitable for the summer season.",
+    "test_input": "I plan to travel to Iceland from July 1st to 8th, generate the travel plan.",
+    "workflow": {
+      "platform": "dify",
+      "nodes": [
+        {"id": "begin", "type": "start", "config": {}},
+        {"id": "problem_decomposition", "type": "llm", "config": {"prompt": "You are a problem decomposition expert, you should break down the user's task into several sub-tasks.", "model": "gpt-4o-mini", "temperature": 0.2}},
+        {"id": "subtask_processing", "type": "llm", "config": {"prompt": "Execute each sub-task and gather the needed information.", "model": "gpt-4o-mini"}},
+        {"id": "aggregate_results", "type": "llm", "config": {"prompt": "Aggregate sub-task results and generate the final travel itinerary.", "model": "gpt-4o-mini"}},
+        {"id": "end", "type": "end", "config": {}}
+      ],
+      "edges": [
+        ["begin", "problem_decomposition"],
+        ["problem_decomposition", "subtask_processing"],
+        ["subtask_processing", "aggregate_results"],
+        ["aggregate_results", "end"]
+      ]
+    },
+    "trajectory": [
+      {"id": "begin", "type": "start", "input": null, "output": "I plan to travel to Iceland from July 1st to 8th, generate the travel plan.", "status": "success"},
+      {"id": "problem_decomposition", "type": "llm", "input": "I plan to travel to Iceland from July 1st to 8th, generate the travel plan.", "output": ["1. Search for attractions in Iceland", "2. Check weather conditions in Iceland", "3. Query local transportation"], "status": "success"},
+      {"id": "subtask_processing", "type": "llm", "input": ["1. Search for attractions in Iceland", "2. Check weather conditions in Iceland", "3. Query local transportation"], "output": {"attractions": ["Northern Lights viewing", "Ice cave tour"], "transportation": "rental car"}, "status": "success"},
+      {"id": "aggregate_results", "type": "llm", "input": {"attractions": ["Northern Lights viewing", "Ice cave tour"], "transportation": "rental car"}, "output": {"itinerary": "Day1 Northern Lights, Day2 Ice cave tour, ...", "hotel": null}, "status": "success"},
+      {"id": "end", "type": "end", "input": {"itinerary": "Day1 Northern Lights, Day2 Ice cave tour, ...", "hotel": null}, "output": {"itinerary": "Day1 Northern Lights, Day2 Ice cave tour, ...", "hotel": null}, "status": "success"}
+    ],
+    "final_output": {"itinerary": "Day1 Northern Lights viewing, Day2 Ice cave tour", "hotel": null, "note": "activities unsuitable for summer; no hotel info"},
+    "gt_responsible_node": "problem_decomposition",
+    "gt_root_cause": "Poor Prompt Design"
+  },
+  {
+    "case_id": "qa_assistant_002",
+    "platform": "coze",
+    "task": "A Q&A assistant that classifies a user question and answers it; it must remain robust to invalid-format or excessively long inputs.",
+    "test_input": "<<<garbled-format input that is extremely long ... (10k chars)>>>",
+    "workflow": {
+      "platform": "coze",
+      "nodes": [
+        {"id": "begin", "type": "start", "config": {}},
+        {"id": "classification", "type": "classifier", "config": {"categories": ["factual", "opinion", "other"]}},
+        {"id": "answer", "type": "llm", "config": {"prompt": "Answer the classified question.", "model": "gpt-4o"}},
+        {"id": "end", "type": "end", "config": {}}
+      ],
+      "edges": [
+        ["begin", "classification"],
+        ["classification", "answer"],
+        ["answer", "end"]
+      ]
+    },
+    "trajectory": [
+      {"id": "begin", "type": "start", "input": null, "output": "<<<garbled-format input that is extremely long>>>", "status": "success"},
+      {"id": "classification", "type": "classifier", "input": "<<<garbled-format input that is extremely long>>>", "output": null, "status": "error"},
+      {"id": "answer", "type": "llm", "input": null, "output": null, "status": "fail"}
+    ],
+    "final_output": null,
+    "gt_responsible_node": "classification",
+    "gt_root_cause": "Missing Input Verification"
+  }
+]

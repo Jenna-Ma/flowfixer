@@ -1,0 +1,5 @@
+# FLOWFIXER reproduction dependencies
+openai>=1.30.0          # OpenAI-compatible client (used against the vveai.com endpoint)
+numpy>=1.24.0
+tqdm>=4.65.0
+matplotlib>=3.7.0       # only needed for RQ4 figure (experiments/report.py)
