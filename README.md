@@ -3,7 +3,7 @@
 A faithful, runnable reproduction of the algorithm in
 **"Diagnosis-Driven Automatic Repair for Agentic Workflow via Symbolic Inference"**
 (FLOWFIXER). This repo implements the full two-stage framework plus the RQ1–RQ4
-evaluation harness. Baselines are intentionally out of scope.
+evaluation harness. 
 
 
 ## What's implemented
